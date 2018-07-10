@@ -1,0 +1,105 @@
+
+namespace abc
+
+asset Company identified by companyId {
+    o String companyId
+    o String name
+    o Double lat  //latitude
+    o Double long //longitude
+}
+
+abstract asset Product identified by productId {
+    o String productId
+    --> Company company
+    //--> Product[] parts
+}
+
+asset Car extends Product {
+    o CarStatus status default="CREATED"
+    --> Holder holder
+    --> Roof roof default="Null"
+    --> Shell shell default="Null"
+    --> QMCheck[] qMChecks default="Null"
+    --> TransportReport transportReport default="Null"
+}
+
+asset Roof extends Product {
+    o RoofStatus status default="ONSTOCK"
+}
+
+asset Shell extends Product {
+    o ProductStatus status default="ONSTOCK"
+}
+
+asset QMCheck identified by qmId {
+    o String qmId
+    o Boolean lightCheck default="False"
+    o Boolean hornCheck default="False"
+}
+
+asset TransportReport identified by transId {
+    o String transId
+    o String routeHash
+    o Boolean tilted default="False"
+    o Boolean acceleration default="False"
+}
+
+enum CarStatus {
+    o CREATED
+    o ASSEMBLY
+    o QM
+    o READYFORTRANSPORT
+    o TRANSPORT
+    o ARRIVED
+    o FORSALE
+    o SOLD
+}
+
+enum ProductStatus {
+    o ONSTOCK
+    o MOUNTED
+}
+
+
+abstract participant User identified by uID {
+    o String uID
+}
+
+participant Customer extends User {
+}
+
+participant Holder extends User {
+    --> Company company
+}
+
+participant Assembly_holder extends Holder {
+    o Double lat
+    o Double long
+}
+
+participant QM_holder extends Holder {
+    o Double lat
+    o Double long
+}
+
+participant Transport_holder extends Holder {
+    o String vehicle
+}
+
+participant Distribution_holder extends Holder {
+    o Double lat
+    o Double long
+}
+
+/*
+transaction AlterInformation {
+  --> User user
+  o String email
+}
++/
+
+/*
+event RequestProcessedEvent {
+    o String authId
+}
+*/
