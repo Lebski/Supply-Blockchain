@@ -72,7 +72,7 @@ abstract participant User identified by uID {
 participant Customer extends User {
 }
 
-participant Holder extends User {
+abstract participant Holder extends User {
     --> Company company
 }
 
