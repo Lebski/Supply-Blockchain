@@ -18,7 +18,13 @@ def end_read(signal,frame):
     GPIO.cleanup()
 
 def stringify(payload):
-    output_str = ''.join(str(chr(i)) for i in payload)
+    #output_str = ''.join(str(chr(i)) for i in payload)
+    output_str = ""
+    for char in payload:
+        if (char != 0):
+            output_str += str(chr(i))
+    if output_str is "":
+        output_str = "empty_payload"
     return output_str
 
 # Hook the SIGINT
