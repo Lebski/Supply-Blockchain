@@ -24,7 +24,6 @@ signal.signal(signal.SIGINT, end_read)
 MIFAREReader = MFRC522.MFRC522()
 
 # Welcome message
-print ("Welcome to the MFRC522 data read example")
 print ("Press Ctrl-C to stop.")
 
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
@@ -35,7 +34,6 @@ while continue_reading:
 
     # If a card is found
     if status == MIFAREReader.MI_OK:
-        print ("Card detected")
 
     # Get the UID of the card
     (status,uid) = MIFAREReader.MFRC522_Anticoll()
@@ -43,10 +41,6 @@ while continue_reading:
 
     # If we have the UID, continue
     if status == MIFAREReader.MI_OK:
-
-
-        #sender.send_message("Card read UID: %s,%s,%s,%s" % (uid[0], uid[1], uid[2], uid[3]))
-        print ("Message sent!")
 
         # This is the default key for authentication
         key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
@@ -60,7 +54,7 @@ while continue_reading:
         # Check if authenticated
         if status == MIFAREReader.MI_OK:
             in_Data = MIFAREReader.MFRC522_Read(8)
-            if not numpy.array_equal(stored_Data, in_Data):
+            if (in_Data is not None) and not numpy.array_equal(stored_Data, in_Data):
                 if in_Data is not None:
                     stored_Data = in_Data
                     print ("Found DATA" + str(in_Data))

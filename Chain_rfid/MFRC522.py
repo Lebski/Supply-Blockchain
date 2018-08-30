@@ -307,7 +307,6 @@ class MFRC522:
     (status, backData, backLen) = self.MFRC522_ToCard(self.PCD_TRANSCEIVE, buf)
 
     if (status == self.MI_OK) and (backLen == 0x18):
-      print ("Size: " + str(backData[0]))
       return    backData[0]
     else:
       return 0
