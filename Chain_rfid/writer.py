@@ -17,7 +17,7 @@ def unistringify(input_string):
     if len(input_string) > 16:
         input_string = input_string[:16]
     elif len(input_string) < 16:
-        input_string += "z" * (16 - len(input_string))
+        input_string += "0" * (16 - len(input_string))
 
     payload_arr = []
     for letter in input_string:
