@@ -60,7 +60,7 @@ while continue_reading:
         # Check if authenticated
         if status == MIFAREReader.MI_OK:
             in_Data = MIFAREReader.MFRC522_Read(8)
-            if not numpy.array_equal(stored_Data, in_Data):
+            if not numpy.array_equal(stored_Data, in_Data) and in_Data not None:
                 stored_Data = in_Data
                 print ("Found DATA" + str(in_Data))
 
