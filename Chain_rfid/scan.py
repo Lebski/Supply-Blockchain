@@ -25,6 +25,7 @@ def stringify(payload):
             output_str += str(chr(char))
     if output_str is "":
         output_str = "empty_payload"
+    output_str = '"' + output_str + '"'
     return output_str
 
 # Hook the SIGINT
