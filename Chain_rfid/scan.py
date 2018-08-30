@@ -22,7 +22,7 @@ def stringify(payload):
     output_str = ""
     for char in payload:
         if (char != 0):
-            output_str += str(chr(i))
+            output_str += str(chr(char))
     if output_str is "":
         output_str = "empty_payload"
     return output_str
