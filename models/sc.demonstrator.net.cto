@@ -39,10 +39,10 @@ asset QAReport identified by qaId {
 
 asset TransportReport identified by transId {
     o String transId
-    o String routeHash
-    o Boolean tilted default=false
-    o Boolean acceleration default=false
-    o String vehicle
+    o String routeHash optional
+    o Integer tilted optional
+    o Integer acceleration optional
+    o String vehicle optional
 }
 
 enum CarStatus {
@@ -116,54 +116,58 @@ transaction CreateCar {
 Assemble Car and add Roof, Shell
 */
 transaction Assembly {
-  o Car car
+  --> Car car
   o Roof roof
+  o Shell shell
 }
 
 transaction QACheck {
-  o Car car
+  --> Car car
   o String qaId
   o Boolean lightCheck
   o Boolean hornCheck
-  // create QAReport QAReport
-  // Participant holder = QA_holder
-  // CarStatus status = QA
+
+  // TODO Participant holder = QA_holder
 }
 
 transaction ReadyForTransport {
-  o Car car
+  --> Car car
   o String transId
   // CarStatus status = READYFORTRANSPORT
   // create TransportReport
 }
 
 transaction TransportStart {
-  o Car car
+  --> Car car
   // CarStatus status = TRANSPORT
-  // Participant holder = Transport_holder
+  // TODO Participant holder = Transport_holder
 }
 
 transaction SensorStatusUpdate {
-    o Car car
-    o Boolean tilted
-    o Boolean acceleration
+    --> Car car
+    o Integer tilted
+    o Integer acceleration
 }
 
 transaction TransportStop {
-  o Car car
+  --> Car car
   // CarStatus status = ARRIVED
 }
 
 transaction TakeOverFromTransport {
-  o Car car
-  // Participant holder = Distribution_holder
+  --> Car car
+  // TODO Participant holder = Distribution_holder
   // CarStatus status = FORSALE
 }
 
 transaction Sold {
-  o Car car
+  --> Car car
   // Participant holder = CustomerXY
   // CarStatus status = SOLD
+}
+
+transaction Setup {
+
 }
 
 /*
