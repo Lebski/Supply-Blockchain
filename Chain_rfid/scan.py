@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import MFRC522
 import signal
 import sender
-
+import numpy
 continue_reading = True
 sender.init()
 
