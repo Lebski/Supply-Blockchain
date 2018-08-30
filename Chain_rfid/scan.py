@@ -6,6 +6,9 @@ import numpy
 continue_reading = True
 sender.init()
 
+stored_Data = []
+in_Data = []
+
 
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
