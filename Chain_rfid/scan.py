@@ -18,7 +18,7 @@ def end_read(signal,frame):
     GPIO.cleanup()
 
 def stringify(payload):
-    output_str = ''.join(str(unichr(i)) for i in payload)
+    output_str = ''.join(str(chr(i)) for i in payload)
 
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
