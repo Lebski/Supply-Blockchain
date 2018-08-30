@@ -16,7 +16,7 @@ def unistringify(input_string):
     fill_count = 0
     if len(input_string) > 16:
         input_string = input_string[:16]
-    else if len(input_string) < 16:
+    elif len(input_string) < 16:
         input_string = "0" * (16 - len(input_string))
 
     payload_arr = []
