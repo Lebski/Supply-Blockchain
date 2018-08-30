@@ -19,6 +19,7 @@ def end_read(signal,frame):
 
 def stringify(payload):
     output_str = ''.join(str(chr(i)) for i in payload)
+    return output_str
 
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
