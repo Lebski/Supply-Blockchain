@@ -60,15 +60,16 @@ while continue_reading:
         # Check if authenticated
         if status == MIFAREReader.MI_OK:
             in_Data = MIFAREReader.MFRC522_Read(8)
-            if not numpy.array_equal(stored_Data, in_Data) and in_Data is not None:
-                stored_Data = in_Data
-                print ("Found DATA" + str(in_Data))
+            if not numpy.array_equal(stored_Data, in_Data):
+                if in_Data is not None:
+                    stored_Data = in_Data
+                    print ("Found DATA" + str(in_Data))
 
-                #uid_str = ', '.join('"' + str(i) +  '"' for i in uid)
-                #in_Data_str = ', '.join('"' + str(i) +  '"' for i in in_Data)
+                    #uid_str = ', '.join('"' + str(i) +  '"' for i in uid)
+                    #in_Data_str = ', '.join('"' + str(i) +  '"' for i in in_Data)
 
-                json_str = '{"uid": ' + str(uid) + ', "payload": ' + str(in_Data) + '}'
-                sender.send_message(json_str)
+                    json_str = '{"uid": ' + str(uid) + ', "payload": ' + str(in_Data) + '}'
+                    sender.send_message(json_str)
             MIFAREReader.MFRC522_StopCrypto1()
         else:
             print ("Authentication error")
