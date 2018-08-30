@@ -21,8 +21,8 @@ signal.signal(signal.SIGINT, end_read)
 MIFAREReader = MFRC522.MFRC522()
 
 # Welcome message
-print "Welcome to the MFRC522 data read example"
-print "Press Ctrl-C to stop."
+print ("Welcome to the MFRC522 data read example")
+print ("Press Ctrl-C to stop.")
 
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
 while continue_reading:
@@ -32,7 +32,7 @@ while continue_reading:
 
     # If a card is found
     if status == MIFAREReader.MI_OK:
-        print ()"Card detected")
+        print ("Card detected")
 
     # Get the UID of the card
     (status,uid) = MIFAREReader.MFRC522_Anticoll()
@@ -65,4 +65,4 @@ while continue_reading:
                 sender.send_message(json_str)
             MIFAREReader.MFRC522_StopCrypto1()
         else:
-            print ()"Authentication error")
+            print ("Authentication error")
