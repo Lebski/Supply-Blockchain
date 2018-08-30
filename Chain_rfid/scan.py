@@ -17,6 +17,9 @@ def end_read(signal,frame):
     continue_reading = False
     GPIO.cleanup()
 
+def stringify(payload):
+    output_str = ''.join(str(unichr(i)) for i in payload)
+
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
 
@@ -57,7 +60,7 @@ while continue_reading:
                 #uid_str = ', '.join('"' + str(i) +  '"' for i in uid)
                 #in_Data_str = ', '.join('"' + str(i) +  '"' for i in in_Data)
 
-                json_str = '{"uid": ' + str(uid) + ', "payload": ' + str(in_Data) + '}'
+                json_str = '{"uid": ' + str(uid) + ', "payload": ' + stringify(in_Data) + '}'
                 sender.send_message(json_str)
             MIFAREReader.MFRC522_StopCrypto1()
         else:
