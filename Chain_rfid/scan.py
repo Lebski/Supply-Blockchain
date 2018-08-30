@@ -64,10 +64,10 @@ while continue_reading:
                 stored_Data = in_Data
                 print ("Found DATA" + str(in_Data))
 
-                uid_str = ', '.join('"' + str(i) +  '"' for i in uid)
-                in_Data_str = ', '.join('"' + str(i) +  '"' for i in in_Data)
+                #uid_str = ', '.join('"' + str(i) +  '"' for i in uid)
+                #in_Data_str = ', '.join('"' + str(i) +  '"' for i in in_Data)
 
-                json_str = '{"uid": [' + uid_str + '], "payload": ' + in_Data_str + '}'
+                json_str = '{"uid": [' + str(uid) + '], "payload": [' + str(in_Data) + ']}'
                 sender.send_message(json_str)
             MIFAREReader.MFRC522_StopCrypto1()
         else:
