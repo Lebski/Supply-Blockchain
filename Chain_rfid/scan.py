@@ -39,13 +39,10 @@ while continue_reading:
 
 
     # If we have the UID, continue
-    if status == MIFAREReader.MI_OK and !(old_uid == uid).all:
+    if status == MIFAREReader.MI_OK:
 
-        # Print UID
-        print ("Card read UID: %s,%s,%s,%s" % (uid[0], uid[1], uid[2], uid[3]))
-        old_uid = uid
 
-        sender.send_message("Card read UID: %s,%s,%s,%s" % (uid[0], uid[1], uid[2], uid[3]))
+        #sender.send_message("Card read UID: %s,%s,%s,%s" % (uid[0], uid[1], uid[2], uid[3]))
         print ("Message sent!")
 
         # This is the default key for authentication
@@ -59,7 +56,13 @@ while continue_reading:
 
         # Check if authenticated
         if status == MIFAREReader.MI_OK:
-            MIFAREReader.MFRC522_Read(8)
+            in_Data = MIFAREReader.MFRC522_Read(8)
+            if not numpy.array_equal(stored_Data, in_Data):
+                stored_Data = in_Data
+                print ("Found DATA" + str(in_Data))
+                json_str = '{uid": ' + str(in_Data) + ', "payload": ' + str(in_Data) + '}'
+                json_str = json_str.replace("\'", '"')
+                sender.send_message(json_str)
             MIFAREReader.MFRC522_StopCrypto1()
         else:
             print ()"Authentication error")
