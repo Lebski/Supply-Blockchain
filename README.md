@@ -26,6 +26,7 @@ git clone https://github.com/lthiery/SPI-Py.git
 cd SPI-Py 
 #It is super important to INSTALL WITH PYTHON3
 sudo python3 setup.py install 
+pip3 install paho-mqtt python-etcd
 cd .. 
 git clone https://github.com/Lebski/chain_pi
 ```
