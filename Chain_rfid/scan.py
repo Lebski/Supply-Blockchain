@@ -99,10 +99,11 @@ while continue_reading:
         MIFAREReader.MFRC522_SelectTag(uid)
 
         # Authenticate
-        status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
+        if auth_skip is False:
+            status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
 
         # Check if authenticated
-        if status == MIFAREReader.MI_OK:
+        if status == MIFAREReader.MI_OK or auth_skip:
             in_Data = MIFAREReader.MFRC522_Read(8)
             if (in_Data is not None) and not numpy.array_equal(stored_Data, in_Data):
                 stored_Data = in_Data
