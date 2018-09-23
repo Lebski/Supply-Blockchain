@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Supply-Blockchain
 
 ### Overview ###
@@ -10,8 +9,10 @@ The simulation begins with an automotive production line. The [Contribution guid
 We also simulate the transportation and the selling of the car. 
 
 This project uses the hyperledger fabric blockchain together with the hyperledger composer tool. 
-=======
-# Supply-Blockchain Sender
+
+
+
+## Supply-Blockchain Sender
 
 ### Overview ###
 
@@ -62,4 +63,4 @@ And then run the Skript:
 ```
 python3 sender.py
 ```
->>>>>>> sensors/master
+
