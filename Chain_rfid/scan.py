@@ -3,12 +3,55 @@ import MFRC522
 import signal
 import sender
 import numpy
+import argparse
+import sys, argparse
+
 continue_reading = True
-sender.init()
 
 stored_Data = []
 in_Data = []
 
+
+broker = "iot.eclipse.org"
+port = 1883
+topic = "supply/sensor1"
+key = []
+auth_skip = False
+
+parser = argparse.ArgumentParser(description='Setting up scan.py')
+parser.add_argument('-n', action='store_true', help='No authentication mode (e.g. for NTAG2XX)') # no authentication mode
+parser.add_argument('-a', nargs=6, help='Authentication string, comma seperated', type=int) # authentication
+parser.add_argument('-t', help='Your onw topic') # own topic
+parser.add_argument('-c', help='Choose one of the constant topics', choices=['default', 'assembly', 'qa', 'ready', 'transport', 'arrived', 'forsale', 'sold'] ) # constant topic
+parser.add_argument('-b', help='Choose URL or IP for broker') # broker
+parser.add_argument('-p', help='Choose Port for broker') # Port
+args = parser.parse_args()
+
+
+if (args.n == True ):
+    auth_skip = True
+    print ("Authentication is disabled")
+elif (args.a != None):
+    key = args.a
+    print ("Authentication-Key set to: ", key)
+if (args.t != None):
+    topic = args.t
+    print ("Topic set to: ", topic)
+elif (args.c != None):
+    if (args.c == "default"): topic = "supply/sensor1"
+    if (args.c == "assembly"): topic = "supply/assembly"
+    if (args.c == "qa"): topic = "supply/qacheck"
+    if (args.c == "ready"): topic = "supply/readyfortransport"
+    if (args.c == "transport"): topic = "supply/transport"
+    if (args.c == "arrived"): topic = "supply/arrived"
+    if (args.c == "forsale"): topic = "supply/forsale"
+    if (args.c == "sold"): topic = "supply/sold"
+if (args.b != None):
+    broker = args.b
+if (args.p != None):
+    port = args.p
+
+sender.init(broker, port, topic)
 
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
