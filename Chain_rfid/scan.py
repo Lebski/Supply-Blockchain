@@ -38,14 +38,16 @@ if (args.t != None):
     topic = args.t
     print ("Topic set to: ", topic)
 elif (args.c != None):
-    if (args.c == "default"): topic = "supply/sensor1"
-    if (args.c == "assembly"): topic = "supply/assembly"
-    if (args.c == "qa"): topic = "supply/qacheck"
-    if (args.c == "ready"): topic = "supply/readyfortransport"
-    if (args.c == "transport"): topic = "supply/transport"
-    if (args.c == "arrived"): topic = "supply/arrived"
-    if (args.c == "forsale"): topic = "supply/forsale"
-    if (args.c == "sold"): topic = "supply/sold"
+    if (args.c == "default"): topic = "supply/sensor"
+    if (args.c == "shell"): topic = "/manufacturer/arrival/shell"
+    if (args.c == "roof"): topic = "/manufacturer/arrival/roof"
+    if (args.c == "assembly"): topic = "/manufacturer/assembly"
+    if (args.c == "qa"): topic = "/manufacturer/qualityAssurance"
+    if (args.c == "arrival"): topic = "/carrier/arrival"
+    if (args.c == "temp"): topic = "/carrier/transportation/temp"
+    if (args.c == "velocity"): topic = "/carrier/transportation/velocity"
+    if (args.c == "arrival"): topic = "/dealer/arrival"
+    if (args.c == "sale"): topic = "/dealer/sale"
 if (args.b != None):
     broker = args.b
 if (args.p != None):
