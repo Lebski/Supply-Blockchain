@@ -14,7 +14,7 @@ def on_message(client, userdata, msg):
 
 def init (_receiver , _port, _topic):
     receiver = _receiver
-    port = _port
+    port = int(_port)
     global topic
     topic = _topic
     client.connect(receiver, port, max_timeout)
