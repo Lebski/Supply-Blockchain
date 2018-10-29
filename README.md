@@ -8,6 +8,9 @@ We also simulate the transportation and the selling of the car.
 
 This project uses the hyperledger fabric blockchain together with the hyperledger composer tool. 
 
+Here is an architecture overview: 
+![architecture overview](https://github.com/Lebski/Supply-Blockchain/blob/develop/basic-architecture.png)
+
 ## Supply-Blockchain Sender
 
 ### Overview ###
