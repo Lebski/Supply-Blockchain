@@ -44,18 +44,19 @@ git clone https://github.com/Lebski/Supply-Blockchain
 ### Run ###
 
 ```
-cd Chain_rfid
-nano sender.py
+cd Supply-Blockchain/Chain_rfid
+python3 scan.py 
 ```
-Change the receiver (broker here) 
-```
-receiver = "iot.eclipse.org" 	#Hier die eigene IP Adresse / Domain
-port = 1883 			# Hier der eigene Port 
-max_timeout = 60 		      # Maximales Timeout 
-topic = "supply/sensor1"	# Hier die Topic, auf die der broker hört
-```
+In another terminal you can run the `listener.py`. It listens to the default settings of `scan.py`(no flags needed). 
+These are the presettings: 
+
+receiver = "iot.eclipse.org" 	
+port = 1883 			
+max_timeout = 60
+topic = "supply/sensor1"	
 
 And then run the Skript: 
 ```
-python3 sender.py
+python3 listener.py
 ```
+
