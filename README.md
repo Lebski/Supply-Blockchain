@@ -38,7 +38,7 @@ cd SPI-Py
 sudo python3 setup.py install 
 pip3 install paho-mqtt python-etcd
 cd .. 
-git clone https://github.com/Lebski/chain_pi
+git clone https://github.com/Lebski/Supply-Blockchain
 ```
 
 ### Run ###
