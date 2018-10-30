@@ -32,9 +32,17 @@ sudo pip3 install RPi.GPIO
 # also possible: python3 -m pip install RPi.GPIO
 printf "device_tree_param=spi=on \ndtoverlay=spi-bcm2708\n" >>  /boot/config.txt
 sudo raspi-config 
-# Now you have to choose "Advanced Options > SPI"
-sudo reboot
+```
+In the menu select "5 Interfacing Options"
+Select "SPI" (probably 4th entry) 
+When asked if you want to enable the SPI interface select "<Yes>"  
+Exit menu with "<Finish>"
 
+Reboot your Raspberry Pi
+```
+sudo reboot
+```
+```
 git clone https://github.com/lthiery/SPI-Py.git 
 cd SPI-Py 
 #It is super important to INSTALL WITH PYTHON3
