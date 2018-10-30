@@ -35,6 +35,7 @@ asset QAReport identified by qaId {
     o String qaId
     o Boolean lightCheck default=false
     o Boolean hornCheck default=false
+    o Holder issuer optional
 }
 
 asset TransportReport identified by transId {
@@ -43,6 +44,7 @@ asset TransportReport identified by transId {
     o Integer tilted optional
     o Integer acceleration optional
     o String vehicle optional
+    o Holder issuer optional
 }
 
 enum CarStatus {
@@ -101,11 +103,22 @@ transaction AlterInformation {
 }*/
 
 /*
+Super Class for every UserInteraction
+*/
+transaction UserInteraction {
+  --> Car car
+
+  //Issuer can be used to
+  //A. Identify owner
+  //B. Identy holder (especially Transport and QA Holder)
+  --> Holder issuer
+}
+
+/*
 Creates Car, sets CarId
 */
-transaction CreateCar {
+transaction CreateCar extends UserInteraction {
   o String productId
-  --> Holder issuer
   // CarStatus = ASSEMBLY
   // Company company (wird durch issuer bestimmt)
   // Participant holder (wird durch issuer bestimmt)
@@ -115,53 +128,39 @@ transaction CreateCar {
 /*
 Assemble Car and add Roof, Shell
 */
-transaction Assembly {
-  --> Car car
+transaction Assembly extends UserInteraction {
   o Roof roof
   o Shell shell
 }
 
-transaction QACheck {
-  --> Car car
+transaction QACheck extends UserInteraction {
   o String qaId
   o Boolean lightCheck
   o Boolean hornCheck
-
-  // TODO Participant holder = QA_holder
 }
 
-transaction ReadyForTransport {
-  --> Car car
+transaction ReadyForTransport extends UserInteraction {
   o String transId
-  // CarStatus status = READYFORTRANSPORT
-  // create TransportReport
 }
 
-transaction TransportStart {
-  --> Car car
-  // CarStatus status = TRANSPORT
-  // TODO Participant holder = Transport_holder
+transaction TransportStart extends UserInteraction {
 }
 
-transaction SensorStatusUpdate {
-    --> Car car
+transaction SensorStatusUpdate extends UserInteraction {
     o Integer tilted
     o Integer acceleration
 }
 
-transaction TransportStop {
-  --> Car car
+transaction TransportStop extends UserInteraction {
   // CarStatus status = ARRIVED
 }
 
-transaction TakeOverFromTransport {
-  --> Car car
+transaction TakeOverFromTransport extends UserInteraction {
   // TODO Participant holder = Distribution_holder
   // CarStatus status = FORSALE
 }
 
-transaction Sold {
-  --> Car car
+transaction Sold extends UserInteraction {
   // Participant holder = CustomerXY
   // CarStatus status = SOLD
 }

@@ -8,8 +8,66 @@ We also simulate the transportation and the selling of the car.
 
 This project uses the hyperledger fabric blockchain together with the hyperledger composer tool. 
 
+Here is an architecture overview: 
+![architecture overview](https://github.com/Lebski/Supply-Blockchain/blob/develop/basic-architecture.png)
 
-~The simulation begins with an automotive production line. The [Contribution guidelines for this project](https://github.com/Lebski/chain_pi) will be migrated to this project in a later development step.~
+## Supply-Blockchain Sender
 
-### EDIT: 
-You can find the Raspberry Pi RFID Files in the develop - Branch in the `Chain_rfid`-Folder
+### Overview ###
+
+With the provided source code we handle the sensors for the [Supply-Chain](https://github.com/Lebski/Supply-Blockchain) project. 
+We use the MFRC522 Sensor with multiple Raspberry Pi. Each time the Sensor is triggered, we send a JSON object to a MQTT broker. 
+A HTTP POST-Request will soon be possible. 
+
+The Project uses some code-snipptes from [MFRC522-python](https://github.com/mxgxw/MFRC522-python)
+
+### Prerequisites ###
+
+python3, git, python-pip3, python-dev, build-essential 
+
+### Installation ###
+
+```bash
+sudo pip3 install RPi.GPIO
+# also possible: python3 -m pip install RPi.GPIO
+printf "device_tree_param=spi=on \ndtoverlay=spi-bcm2708\n" >>  /boot/config.txt
+sudo raspi-config 
+```
+In the menu select "5 Interfacing Options"
+Select "SPI" (probably 4th entry) 
+When asked if you want to enable the SPI interface select "<Yes>"  
+Exit menu with "<Finish>"
+
+Reboot your Raspberry Pi
+```
+sudo reboot
+```
+```
+git clone https://github.com/lthiery/SPI-Py.git 
+cd SPI-Py 
+#It is super important to INSTALL WITH PYTHON3
+sudo python3 setup.py install 
+pip3 install paho-mqtt python-etcd
+cd .. 
+git clone https://github.com/Lebski/Supply-Blockchain
+```
+
+### Run ###
+
+```
+cd Supply-Blockchain/Chain_rfid
+python3 scan.py 
+```
+In another terminal you can run the `listener.py`. It listens to the default settings of `scan.py`(no flags needed). 
+These are the presettings: 
+
+receiver = "iot.eclipse.org" 	
+port = 1883 			
+max_timeout = 60
+topic = "supply/sensor1"	
+
+And then run the Skript: 
+```
+python3 listener.py
+```
+
