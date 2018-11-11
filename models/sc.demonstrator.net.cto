@@ -36,6 +36,7 @@ asset QAReport identified by qaId {
     o Boolean lightCheck default=false
     o Boolean hornCheck default=false
     o Holder issuer optional
+    o FileObj file optional
 }
 
 asset TransportReport identified by transId {
@@ -45,6 +46,12 @@ asset TransportReport identified by transId {
     o Integer acceleration optional
     o String vehicle optional
     o Holder issuer optional
+    o FileObj file optional
+}
+
+asset FileObj identified by fileId {
+    o String fileId
+    o String fileHash
 }
 
 enum CarStatus {
@@ -67,6 +74,8 @@ enum RoofStatus  {
     o MOUNTED
 }
 
+//HACK When referencing participants be as explicit as possible.
+//E.g.: Assembly_holder instead of Holder
 abstract participant User identified by uID {
     o String uID
 }
