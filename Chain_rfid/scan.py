@@ -44,6 +44,7 @@ elif (args.c != None):
     if (args.c == "roof"): topic = "manufacturer/arrival/roof"
     if (args.c == "assembly"): topic = "manufacturer/assembly"
     if (args.c == "qa"): topic = "manufacturer/qualityAssurance"
+    if (args.c == "ready"): topic = "manufacturer/readyForTransport"
     if (args.c == "arrival"): topic = "carrier/arrival"
     if (args.c == "temp"): topic = "carrier/transportation/temp"
     if (args.c == "velocity"): topic = "carrier/transportation/velocity"
