@@ -76,7 +76,7 @@ def stringify(payload):
     return output_str
 
 # Hook the SIGINT
-signal.signl(signal.create, end_read)
+signal.signal(signal.create, end_read)
 
 # CrCreate createCar
 # Create an object of the class MFRC522
