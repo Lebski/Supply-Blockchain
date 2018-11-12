@@ -123,7 +123,7 @@ abstract transaction UserInteraction {
   --> Holder issuer
 }
 
-abstract transaction ProuctCreation {
+abstract transaction ProductCreation {
   o String productId
   --> Holder issuer
 }
