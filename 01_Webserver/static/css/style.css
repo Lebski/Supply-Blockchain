@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #74b9ff;
+  overflow: hidden;
+  width: 100%;
+}
+
+h4 {
+  color: #343a40;
+font-size: 3em;
+margin-bottom: 10px;
+font-weight: bold;
+}
+
+p {
+      font-size: 1.25rem;
+      margin-bottom: 0.2rem;
+}
+
+
+.main {
+  width: 50%;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
