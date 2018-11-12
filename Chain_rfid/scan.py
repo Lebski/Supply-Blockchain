@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser(description='Setting up scan.py')
 parser.add_argument('-n', action='store_true', help='No authentication mode (e.g. for NTAG2XX)') # no authentication mode
 parser.add_argument('-a', nargs=6, help='Authentication string, comma seperated', type=int) # authentication
 parser.add_argument('-t', help='Your onw topic') # own topic
-parser.add_argument('-c', help='Choose one of the constant topics', choices=['default', 'assembly', 'qa', 'ready', 'transport', 'arrived', 'forsale', 'sold'] ) # constant topic
+parser.add_argument('-c', help='Choose one of the constant topics', choices=['create', 'default', 'shell', 'roof', 'assembly', 'qa', 'ready', 'transport', 'temp', 'velocity', 'arrival', 'sold'] ) # constant topic
 parser.add_argument('-b', help='Choose URL or IP for broker') # broker
 parser.add_argument('-p', help='Choose Port for broker') # Port
 args = parser.parse_args()
