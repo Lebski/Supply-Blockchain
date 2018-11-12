@@ -39,6 +39,7 @@ if (args.t != None):
     print ("Topic set to: ", topic)
 elif (args.c != None):
     if (args.c == "default"): topic = "supply/sensor"
+    if (args.c == "create"): topic = "manufacturer/createCar"
     if (args.c == "shell"): topic = "manufacturer/arrival/shell"
     if (args.c == "roof"): topic = "manufacturer/arrival/roof"
     if (args.c == "assembly"): topic = "manufacturer/assembly"
@@ -74,8 +75,9 @@ def stringify(payload):
     return output_str
 
 # Hook the SIGINT
-signal.signal(signal.SIGINT, end_read)
+signal.signl(signal.create, end_read)
 
+# CrCreate createCar
 # Create an object of the class MFRC522
 MIFAREReader = MFRC522.MFRC522()
 
