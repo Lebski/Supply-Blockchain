@@ -131,7 +131,7 @@ abstract transaction ProductCreation {
 /*
 Creates Car, sets CarId
 */
-transaction CreateCar extends ProuctCreation {
+transaction CreateCar extends ProductCreation {
   // CarStatus = ASSEMBLY
   // Company company (wird durch issuer bestimmt)
   // Participant holder (wird durch issuer bestimmt)
