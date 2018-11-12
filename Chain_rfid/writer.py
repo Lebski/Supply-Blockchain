@@ -28,7 +28,7 @@ def unistringify(input_string):
 
 def generateData():
     random_number = random.randint(3000,4000)
-    print ("Generated Id: car" + random_number)
+    print ("Generated Id: car" + str(random_number))
     return unistringify("car" + str(random_number))
 
 # Hook the SIGINT
