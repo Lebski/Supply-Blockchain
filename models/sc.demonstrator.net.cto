@@ -116,7 +116,6 @@ Super Class for every UserInteraction
 */
 abstract transaction UserInteraction {
   --> Car car
-
   //Issuer can be used to
   //A. Identify owner
   //B. Identy holder (especially Transport and QA Holder)
@@ -132,6 +131,7 @@ abstract transaction ProductCreation {
 Creates Car, sets CarId
 */
 transaction CreateCar extends ProductCreation {
+  o Shell shell
   // CarStatus = ASSEMBLY
   // Company company (wird durch issuer bestimmt)
   // Participant holder (wird durch issuer bestimmt)
@@ -143,7 +143,6 @@ Assemble Car and add Roof, Shell
 */
 transaction Assembly extends UserInteraction {
   o Roof roof
-  o Shell shell
 }
 
 transaction QACheck extends UserInteraction {
