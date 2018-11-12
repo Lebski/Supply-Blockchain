@@ -22,13 +22,14 @@ def unistringify(input_string):
     payload_arr = []
     for letter in input_string:
         payload_arr.append(ord(letter))
-    print (payload_arr)
+    print ("Payload" + payload_arr)
     return payload_arr
 
 
 
 def generateData():
     random_number = random.randint(3000,4000)
+    print ("Number:" + random_number)
     return unistringify("car" + str(random_number))
 
 # Hook the SIGINT
