@@ -114,7 +114,7 @@ transaction AlterInformation {
 /*
 Super Class for every UserInteraction
 */
-transaction UserInteraction {
+abstract transaction UserInteraction {
   --> Car car
 
   //Issuer can be used to
@@ -123,11 +123,14 @@ transaction UserInteraction {
   --> Holder issuer
 }
 
+abstract transaction CreateProduct {
+  o String productId
+}
+
 /*
 Creates Car, sets CarId
 */
-transaction CreateCar extends UserInteraction {
-  o String productId
+transaction CreateCar extends CreateProduct {
   // CarStatus = ASSEMBLY
   // Company company (wird durch issuer bestimmt)
   // Participant holder (wird durch issuer bestimmt)
