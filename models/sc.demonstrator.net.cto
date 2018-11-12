@@ -123,14 +123,15 @@ abstract transaction UserInteraction {
   --> Holder issuer
 }
 
-abstract transaction CreateProduct {
+abstract transaction ProuctCreation {
   o String productId
+  --> Holder issuer
 }
 
 /*
 Creates Car, sets CarId
 */
-transaction CreateCar extends CreateProduct {
+transaction CreateCar extends ProuctCreation {
   // CarStatus = ASSEMBLY
   // Company company (wird durch issuer bestimmt)
   // Participant holder (wird durch issuer bestimmt)
