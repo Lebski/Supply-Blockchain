@@ -64,15 +64,15 @@ while continue_reading:
 
         # Authenticate
         status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
-        print ("\n")
+        #print ("\n")
 
         # Check if authenticated
         if status == MIFAREReader.MI_OK:
 
             print ("Sector 8 looked like this:")
             # Read block 8
-            MIFAREReader.MFRC522_Read(8)
-            print ("\n")
+            oldstatus = MIFAREReader.MFRC522_Read(8)
+            print (oldstatus)
 
             data = generateData()
             # Write the data
@@ -80,8 +80,8 @@ while continue_reading:
 
             print ("It now looks like this:")
             # Check to see if it was written
-            MIFAREReader.MFRC522_Read(8)
-            print ("\n")
+            newstatus = MIFAREReader.MFRC522_Read(8)
+            print (newstatus)
 
             # Stop
             MIFAREReader.MFRC522_StopCrypto1()

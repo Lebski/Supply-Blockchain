@@ -39,15 +39,15 @@ if (args.t != None):
     print ("Topic set to: ", topic)
 elif (args.c != None):
     if (args.c == "default"): topic = "supply/sensor"
-    if (args.c == "shell"): topic = "/manufacturer/arrival/shell"
-    if (args.c == "roof"): topic = "/manufacturer/arrival/roof"
-    if (args.c == "assembly"): topic = "/manufacturer/assembly"
-    if (args.c == "qa"): topic = "/manufacturer/qualityAssurance"
-    if (args.c == "arrival"): topic = "/carrier/arrival"
-    if (args.c == "temp"): topic = "/carrier/transportation/temp"
-    if (args.c == "velocity"): topic = "/carrier/transportation/velocity"
-    if (args.c == "arrival"): topic = "/dealer/arrival"
-    if (args.c == "sale"): topic = "/dealer/sale"
+    if (args.c == "shell"): topic = "manufacturer/arrival/shell"
+    if (args.c == "roof"): topic = "manufacturer/arrival/roof"
+    if (args.c == "assembly"): topic = "manufacturer/assembly"
+    if (args.c == "qa"): topic = "manufacturer/qualityAssurance"
+    if (args.c == "arrival"): topic = "carrier/arrival"
+    if (args.c == "temp"): topic = "carrier/transportation/temp"
+    if (args.c == "velocity"): topic = "carrier/transportation/velocity"
+    if (args.c == "arrival"): topic = "dealer/arrival"
+    if (args.c == "sale"): topic = "dealer/sale"
 if (args.b != None):
     broker = args.b
 if (args.p != None):
