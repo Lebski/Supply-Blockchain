@@ -22,14 +22,13 @@ def unistringify(input_string):
     payload_arr = []
     for letter in input_string:
         payload_arr.append(ord(letter))
-    print ("Payload" + payload_arr)
     return payload_arr
 
 
 
 def generateData():
     random_number = random.randint(3000,4000)
-    print ("Number:" + random_number)
+    print ("Generated Id: car" + random_number)
     return unistringify("car" + str(random_number))
 
 # Hook the SIGINT
@@ -55,7 +54,7 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
 
         # Print UID
-        print ("Card read UID: %s,%s,%s,%s" % (uid[0], uid[1], uid[2], uid[3]))
+        print ("UID: %s,%s,%s,%s" % (uid[0], uid[1], uid[2], uid[3]))
 
         # This is the default key for authentication
         key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]

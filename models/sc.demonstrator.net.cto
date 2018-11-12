@@ -44,6 +44,7 @@ asset TransportReport identified by transId {
     o String routeHash optional
     o Integer tilted optional
     o Integer acceleration optional
+    o Integer temperature optional
     o String vehicle optional
     o Holder issuer optional
     o FileObj file optional
@@ -161,6 +162,7 @@ transaction TransportStart extends UserInteraction {
 transaction SensorStatusUpdate extends UserInteraction {
     o Integer tilted
     o Integer acceleration
+    o Integer temperature
 }
 
 transaction TransportStop extends UserInteraction {
