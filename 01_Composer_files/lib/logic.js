@@ -53,10 +53,13 @@ async function executeSetup(SetupParam) {
   // n_Shell.RoofStatus = "MOUNTED";
   n_QAReport.lightCheck = true;
   n_QAReport.hornCheck = true;
+  n_QAReport.issuer = n_QA_holder;
   n_TransportReport.routeHash = "0xdeadbeef";
   n_TransportReport.tilted = 2;
   n_TransportReport.acceleration = 5;
   n_TransportReport.vehicle = "Matchbox";
+  n_TransportReport.issuer = n_Transport_holder;
+
   // n_Customer
   n_Assembly_holder.company = n_Company;
   n_Assembly_holder.lat = 50.00000;
@@ -222,8 +225,11 @@ async function executeTransportSensorStatusUpdate(TransportInfo) {
     if (TransportInfo.acceleration > 0) {
       TransportInfo.car.transportReport.acceleration = TransportInfo.acceleration;
     }
-    if (TransprtInfo.temperature > -274) {
+    if (TransportInfo.temperature > -274) {
       TransportInfo.car.transportReport.acceleration = TransportInfo.temperature;
+    }
+    if (TransportInfo.file != null) {
+      TransportInfo.car.transportReport.file = TransportInfo.file;
     }
 
     await carRegistry.update(TransportInfo.car);

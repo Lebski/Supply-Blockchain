@@ -163,6 +163,7 @@ transaction SensorStatusUpdate extends UserInteraction {
     o Integer tilted
     o Integer acceleration
     o Integer temperature
+    o FileObj file optional
 }
 
 transaction TransportStop extends UserInteraction {
