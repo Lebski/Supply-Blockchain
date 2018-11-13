@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BC-demonstrator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="main">
+
+    <h4> Choose your car! </h4>
+    <p class="info-text"> Please enter a valid car id </p>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-dark" id="basic-addon3">sc.demonstrator.net</span>
+      </div>
+      <input type="text" class="form-control" id="car-id-input" aria-describedby="basic-addon3">
+      <button href="/static/car.html" class="btn text-dark">Load car</button>
+    </div>
+
+    <!-- This will later include the dataset -->
+    <div id="car-description"> </div>
+
+    <script>
+      $(document).ready(function() {
+            $("button").click(function() {
+                var car_id = $('#car-id-input').val();
+              console.log (car_id)
+                $.ajax({
+                  url: 'http://127.0.0.1:5000/car',
+                  type: 'GET',
+                  data: {
+                    carId: car_id
+                  },
+                  dataType: 'text',
+                  error: function(xhr, textStatus) {
+                    var replace_string = `
+                      Is your car id correct? Please try again.<br>
+                      HTML status code: ` + xhr.status;
+                    $('#car-description').html(replace_string);
+                  },
+                  success: function(data) {
+                    payload = JSON.parse(data)
+                    var replace_string = `
+                    <p class="info-text"> Information about |CAR 123| </p>
+                      <table class="overviewtable">
+                        <tr> <td> <b> productId: </b></td> <td>` +payload.productId + `</td> </tr>
+                          <tr> <td> <b> status: </b></td> <td>` +payload.status+ `</td> </tr>
+                          <tr> <td> <b> holder: </b></td> <td>` +payload.holder.split('#').pop()+ `</td> </tr>
+                          <tr> <td> <b> transportReport: </b></td> <td>` +payload.transportReport.transId+ `</td> </tr>
+                          <tr> <td> <b> routeHash: </b></td> <td>` +payload.transportReport.routeHash+ `</td> </tr>
+                    </table>
+                    `;
+                    $('#car-description').html(replace_string);
+                  },
+                });
+              });
+            });
+    </script>
+
+
+
+</body>
+
+</html>
