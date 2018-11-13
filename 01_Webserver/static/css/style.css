@@ -10,20 +10,25 @@ body {
 
 h4 {
   color: #343a40;
-font-size: 3em;
-margin-bottom: 10px;
-font-weight: bold;
+  font-size: 3em;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
-
-p {
-      font-size: 1.25rem;
-      margin-bottom: 0.2rem;
-}
-
 
 .main {
   width: 50%;
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
+  border-width: 0px 0px 0px 0px;
+  padding: 20px;
+  border: 2px solid #343a40;
+  border-radius: 10;
+  border-style: solid;
+  box-shadow: 0px 5px 35px 0px rgba(50, 50, 93, 0.5);
+}
+
+.welcome-text {
+  font-size: 1.25rem;
+  margin-bottom: 0.2rem;
 }
