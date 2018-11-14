@@ -5,8 +5,6 @@ import hashlib, binascii, time
 
 app = Flask(__name__)
 
-
-
 @app.route('/')
 def show_index():
     return redirect("/static/index.html", code=302)
