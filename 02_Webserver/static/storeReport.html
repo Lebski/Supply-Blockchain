@@ -56,7 +56,8 @@
     <button  class="btn text-dark" stlye="padding-top:15px;">Load car</button>
 
     <!-- This will later include the dataset -->
-    <div id="car-description"> </div>
+    <div id="car-description">
+    </div>
 
     <script>
     $(document).ready(function() {
@@ -78,15 +79,16 @@
                   inputText:input_text
                 },
                 dataType: 'text',
-                error: function(xhr, textStatus) {
+                error: function(xhr, status, error) {
+                  var data = xhr.responseText;
                   var replace_string = `
-                    Is your car id correct? Please try again.<br>
-                    HTML status code: ` + xhr.status;
+                    Something went wrong. Please check your data and try again.<br>
+                    Error: ` + data;
                   $('#car-description').html(replace_string);
                 },
                 success: function(data) {
                   //payload = JSON.parse(data)
-                  var replace_string = data;
+                  var replace_string = '<div class="result">&#10004; ' + data + '<b>';
                   $('#car-description').html(replace_string);
                 },
               });

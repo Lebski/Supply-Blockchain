@@ -6,6 +6,7 @@ import hashlib, binascii, time
 app = Flask(__name__)
 
 
+
 @app.route('/')
 def show_index():
     return redirect("/static/index.html", code=302)
@@ -29,9 +30,9 @@ def submit_transaction():
     inputTemp = request.args.get('inputTemp')
     inputText = request.args.get('inputText')
 
-    #Disabled for prototyping
-    #if (inputCar == "" or inputTilt == "" or inputAcc == "" or inputTemp == "" or inputText == ""):
-    #    return "Please fill all fields!", 200
+
+    if (inputCar == "" or inputTilt == "" or inputAcc == "" or inputTemp == "" or inputText == ""):
+        return "Please fill all fields!", 401
 
     fileId, fileHash = generateFileInfo(inputText)
     storeSuccess = storeInCouchDB(fileId, fileHash, inputText)
@@ -39,9 +40,31 @@ def submit_transaction():
     if (storeSuccess is False):
         return "DB Entry was not Sucessfull, please try again later."
 
-    print(carId)
-    #r = requests.post('http://' + bcAddr + ':' + bcPort + '/api/sc.demonstrator.net.Car/' + carId, data = customPayload)
-    return "Thanks for your service", 200
+
+
+    customPayload = {
+      "$class": "sc.demonstrator.net.SensorStatusUpdate",
+      "tilted":  inputTilt,
+      "acceleration":inputAcc,
+      "temperature":  inputTemp,
+      "file": {
+        "$class": "sc.demonstrator.net.FileObj",
+        "fileId": fileId,
+        "fileHash": fileHash
+      },
+      "car": "resource:sc.demonstrator.net.Car#" + inputCar ,
+      "issuer": "resource:sc.demonstrator.net.Transport_holder#Transport_holder_TEST"
+    }
+
+
+    print (customPayload)
+
+    r = requests.post('http://' + bcAddr + ':' + bcPort + '/api/sc.demonstrator.net.SensorStatusUpdate/', json = customPayload)
+    if (r.status_code == 200):
+        return "Yeah! Stored in database with ID: " + fileId + " and Hash: " + fileHash, 200
+    else:
+        print (r.text)
+        return r.text, r.status_code
 
 def generateFileInfo(inputText):
     timestr = str(time.gmtime()[0]) + str(time.gmtime()[1]) + str(time.gmtime()[2]) + str(time.gmtime()[3]) + str(time.gmtime()[4])

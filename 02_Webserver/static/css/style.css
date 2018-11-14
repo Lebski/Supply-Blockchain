@@ -43,3 +43,9 @@ td {
   font-size: 1.25rem;
   margin-bottom: 0.24rem;
 }
+
+.result {
+  margin-top: 20px;
+  font-size: 1.25rem;
+  color: green;
+}
