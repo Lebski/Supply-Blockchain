@@ -1,9 +1,13 @@
 from flask import Flask, url_for, redirect, render_template, request
 import requests
+import hashlib, binascii, time
+
 app = Flask(__name__)
 
 addr = 
 port = '3000'
+
+
 
 @app.route('/')
 def show_index():
@@ -20,15 +24,33 @@ def request_car():
     else:
         return "Sorry, wrong code", r.status_code
 
-@app.route('/submitTransaction')
+@app.route('/report')
 def submit_transaction():
-    # Insert request.args here
+    inputCar = request.args.get('inputCar')
+    inputTilt = request.args.get('inputTilt')
+    inputAcc = request.args.get('inputAcc')
+    inputTemp = request.args.get('inputTemp')
+    inputText = request.args.get('inputText')
 
-    r = requests.post('http://' + addr + ':' + port + '/api/sc.demonstrator.net.Car/' + carId, data = customPayload)
+    fileId, fileHash = generateFileInfo(inputText)
 
+    #Disabled for prototyping
+    #if (inputCar == "" or inputTilt == "" or inputAcc == "" or inputTemp == "" or inputText == ""):
+    #    return "Please fill all fields!", 200
+    print(carId)
+    #r = requests.post('http://' + addr + ':' + port + '/api/sc.demonstrator.net.Car/' + carId, data = customPayload)
+    return "Thanks for your service", 200
 
+def generateFileInfo(inputText):
+    timestr = str(time.gmtime()[0]) + str(time.gmtime()[1]) + str(time.gmtime()[2]) + str(time.gmtime()[3]) + str(time.gmtime()[4])
+    bstring = str.encode(inputText)
+    hash = hashlib.pbkdf2_hmac('sha256', bstring, b'salt', 100000)
+    fileId = (binascii.hexlify(hash).decode("utf-8")[0:10]) + timestr
+    return (fileId, hash)
 
 @app.route('/user/<username>')
 def show_user_profile(username):
     # show the user profile for that user
     return 'User %s' % username
+
+print (generateFileInfo("Hello"))
