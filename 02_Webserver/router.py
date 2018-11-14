@@ -4,7 +4,7 @@ import hashlib, binascii, time
 
 app = Flask(__name__)
 
-addr = 
+addr = '35.198.86.59'
 port = '3000'
 
 
@@ -45,8 +45,9 @@ def generateFileInfo(inputText):
     timestr = str(time.gmtime()[0]) + str(time.gmtime()[1]) + str(time.gmtime()[2]) + str(time.gmtime()[3]) + str(time.gmtime()[4])
     bstring = str.encode(inputText)
     hash = hashlib.pbkdf2_hmac('sha256', bstring, b'salt', 100000)
-    fileId = (binascii.hexlify(hash).decode("utf-8")[0:10]) + timestr
-    return (fileId, hash)
+    hashstr = binascii.hexlify(hash).decode("utf-8")
+    fileId = (hashstr[0:10]) + timestr
+    return (fileId, hashstr)
 
 @app.route('/user/<username>')
 def show_user_profile(username):
