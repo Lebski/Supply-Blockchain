@@ -88,6 +88,47 @@ async function executeSetup(SetupParam) {
 }
 
 /**
+ * Create shell
+ * @param {sc.demonstrator.net.ShellArrival} ShellInfo - Information about new shell
+ * @transaction
+ */
+async function executeShellArrival(ShellInfo) {
+
+  // Get the asset registry for Shell.
+  const assetRegistry = await getAssetRegistry(NS + '.Shell');
+
+  // Generating new Shell
+  var factory = getFactory();
+  var newShell = factory.newResource(NS, 'Shell', ShellInfo.productId);
+
+  newShell.status = "ONSTOCK";
+  newShell.company = ShellInfo.company;
+
+  await assetRegistry.add(newShell);
+}
+
+
+/**
+ * Create roof
+ * @param {sc.demonstrator.net.RoofArrival} RoofInfo - Information about new roof
+ * @transaction
+ */
+async function executeRoofArrival(RoofInfo) {
+
+  // Get the asset registry for Roof.
+  const assetRegistry = await getAssetRegistry(NS + '.Roof');
+
+  // Generating new Roof
+  var factory = getFactory();
+  var newRoof = factory.newResource(NS, 'Roof', RoofInfo.productId);
+
+  newRoof.status = "ONSTOCK";
+  newRoof.company = RoofInfo.company;
+
+  await assetRegistry.add(newRoof);
+}
+
+/**
  * Create car
  * @param {sc.demonstrator.net.CreateCar} CarInfo - Information about new car
  * @transaction
@@ -95,7 +136,9 @@ async function executeSetup(SetupParam) {
 async function executeCreateCar(CarInfo) {
 
   // Get the asset registry for Person.
-  const assetRegistry = await getAssetRegistry(NS + '.Car');
+  const carRegistry = await getAssetRegistry(NS + '.Car');
+  const shellRegistry = await getAssetRegistry(NS + '.Shell');
+
 
   // Generating new Car
   var factory = getFactory();
@@ -105,8 +148,10 @@ async function executeCreateCar(CarInfo) {
   newCar.holder = CarInfo.issuer;
   newCar.company = CarInfo.issuer.company;
   newCar.shell = CarInfo.shell;
+  newCar.shell.status = "MOUNTED";
 
-  await assetRegistry.add(newCar);
+  await carRegistry.add(newCar);
+  await shellRegistry.update(newCar.shell);
 }
 
 
@@ -118,13 +163,16 @@ async function executeCreateCar(CarInfo) {
 async function executeAssembly(Parts) {
 
   // Get the asset registry for Car.
-  const assetRegistry = await getAssetRegistry(NS + '.Car');
+  const carRegistry = await getAssetRegistry(NS + '.Car');
+  const roofRegistry = await getAssetRegistry(NS + '.Roof');
 
   Parts.car.status = "ASSEMBLY";
   Parts.car.roof = Parts.roof;
   Parts.car.holder = Parts.issuer;
+  Parts.car.roof.status = "MOUNTED";
 
-  await assetRegistry.update(Parts.car);
+  await carRegistry.update(Parts.car);
+  await roofRegistry.update(Parts.car.roof);
 }
 
 /**

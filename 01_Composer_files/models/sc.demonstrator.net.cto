@@ -123,11 +123,19 @@ abstract transaction ProductCreation {
   --> Holder issuer
 }
 
+transaction ShellArrival extends ProductCreation {
+  --> Company company
+}
+
+transaction RoofArrival extends ProductCreation {
+  --> Company company
+}
+
 /*
 Creates Car, sets CarId
 */
 transaction CreateCar extends ProductCreation {
-  o Shell shell
+  --> Shell shell
   // CarStatus = ASSEMBLY
   // Company company (wird durch issuer bestimmt)
   // Participant holder (wird durch issuer bestimmt)
@@ -138,7 +146,7 @@ transaction CreateCar extends ProductCreation {
 Assemble Car and add Roof, Shell
 */
 transaction Assembly extends UserInteraction {
-  o Roof roof
+  --> Roof roof
 }
 
 transaction QACheck extends UserInteraction {

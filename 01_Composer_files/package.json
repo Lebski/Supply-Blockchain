@@ -1,6 +1,6 @@
 {
   "name": "supplyblockchain",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Prototype for a Supply Chain with Hyperledger composer",
   "scripts": {
     "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/shoestory.bna",
