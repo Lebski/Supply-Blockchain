@@ -24,7 +24,7 @@ asset Car extends Product {
 }
 
 asset Roof extends Product {
-    o RoofStatus status default="ONSTOCK"
+    o ProductStatus status default="ONSTOCK"
 }
 
 asset Shell extends Product {
@@ -66,11 +66,6 @@ enum CarStatus {
 }
 
 enum ProductStatus {
-    o ONSTOCK
-    o MOUNTED
-}
-
-enum RoofStatus  {
     o ONSTOCK
     o MOUNTED
 }
