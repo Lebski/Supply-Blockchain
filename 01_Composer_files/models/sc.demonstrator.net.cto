@@ -154,7 +154,6 @@ transaction Assembly extends UserInteraction {
 }
 
 transaction QACheck extends UserInteraction {
-  o String qaId
   o Boolean lightCheck
   o Boolean hornCheck
 }
