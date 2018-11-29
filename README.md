@@ -1,6 +1,6 @@
 # Supply-Blockchain
 
-Visit the [Wiki](https://github.com/Lebski/Supply-Blockchain/wiki) for guidline on installation. 
+Visit the [Wiki](https://github.com/Lebski/Supply-Blockchain/wiki) for guidlines on installation. 
 
 ### Overview ###
 
