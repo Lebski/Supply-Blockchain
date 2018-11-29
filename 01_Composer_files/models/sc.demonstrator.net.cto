@@ -162,7 +162,6 @@ transaction ReadyForTransport extends UserInteraction {
 }
 
 transaction TransportStart extends UserInteraction {
-    o String transId
 }
 
 transaction TiltedStatusUpdate extends UserInteraction {
