@@ -2,6 +2,7 @@ from ruuvitag_sensor.ruuvitag import RuuviTag
 import sender
 import sys, argparse
 import json
+import time
 
 #MQTT pre_settings
 broker = "iot.eclipse.org"
@@ -53,15 +54,18 @@ def initMQTT():
 
 
 def ruuviScan():
-    print("Scanning...")
     sensor = RuuviTag(sensor_mac)
     state = sensor.update()
-    print(state)
     json_str = '{"uid": "' + str(sensor_mac) + '", "payload": ' + json.dumps(state) + '}'
     print (json_str)
-    #sender.send_message(json_str)
+    sender.send_message(json_str)
+    time.sleep(2)
 
 
+print("Setting up...")
+getArgs()
+initMQTT()
 print("Startnig to scan...")
-ruuviScan()
+while(True):
+    ruuviScan()
 
