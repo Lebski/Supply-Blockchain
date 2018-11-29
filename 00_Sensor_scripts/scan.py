@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser(description='Setting up scan.py')
 parser.add_argument('-n', action='store_true', help='No authentication mode (e.g. for NTAG2XX)') # no authentication mode
 parser.add_argument('-a', nargs=6, help='Authentication string, comma seperated', type=int) # authentication
 parser.add_argument('-t', help='Your onw topic') # own topic
-parser.add_argument('-c', help='Choose one of the constant topics', choices=['default', 'assembly', 'qa', 'ready', 'transport', 'arrived', 'forsale', 'sold'] ) # constant topic
+parser.add_argument('-c', help='Choose one of the constant topics', choices=['create', 'default', 'shell', 'roof', 'assembly', 'qa', 'ready', 'transport', 'temp', 'velocity', 'arrival', 'sold'] ) # constant topic
 parser.add_argument('-b', help='Choose URL or IP for broker') # broker
 parser.add_argument('-p', help='Choose Port for broker') # Port
 args = parser.parse_args()
@@ -39,15 +39,17 @@ if (args.t != None):
     print ("Topic set to: ", topic)
 elif (args.c != None):
     if (args.c == "default"): topic = "supply/sensor"
-    if (args.c == "shell"): topic = "/manufacturer/arrival/shell"
-    if (args.c == "roof"): topic = "/manufacturer/arrival/roof"
-    if (args.c == "assembly"): topic = "/manufacturer/assembly"
-    if (args.c == "qa"): topic = "/manufacturer/qualityAssurance"
-    if (args.c == "arrival"): topic = "/carrier/arrival"
-    if (args.c == "temp"): topic = "/carrier/transportation/temp"
-    if (args.c == "velocity"): topic = "/carrier/transportation/velocity"
-    if (args.c == "arrival"): topic = "/dealer/arrival"
-    if (args.c == "sale"): topic = "/dealer/sale"
+    if (args.c == "create"): topic = "manufacturer/createCar"
+    if (args.c == "shell"): topic = "manufacturer/arrival/shell"
+    if (args.c == "roof"): topic = "manufacturer/arrival/roof"
+    if (args.c == "assembly"): topic = "manufacturer/assembly"
+    if (args.c == "qa"): topic = "manufacturer/qualityAssurance"
+    if (args.c == "ready"): topic = "manufacturer/readyForTransport"
+    if (args.c == "transport"): topic = "carrier/transport"
+    if (args.c == "temp"): topic = "carrier/transportation/temp"
+    if (args.c == "velocity"): topic = "carrier/transportation/velocity"
+    if (args.c == "arrival"): topic = "dealer/arrival"
+    if (args.c == "sale"): topic = "dealer/sale"
 if (args.b != None):
     broker = args.b
 if (args.p != None):
@@ -76,6 +78,7 @@ def stringify(payload):
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
 
+# CrCreate createCar
 # Create an object of the class MFRC522
 MIFAREReader = MFRC522.MFRC522()
 

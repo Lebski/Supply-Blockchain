@@ -24,7 +24,7 @@ asset Car extends Product {
 }
 
 asset Roof extends Product {
-    o RoofStatus status default="ONSTOCK"
+    o ProductStatus status default="ONSTOCK"
 }
 
 asset Shell extends Product {
@@ -36,6 +36,7 @@ asset QAReport identified by qaId {
     o Boolean lightCheck default=false
     o Boolean hornCheck default=false
     o Holder issuer optional
+    o FileObj file optional
 }
 
 asset TransportReport identified by transId {
@@ -43,8 +44,15 @@ asset TransportReport identified by transId {
     o String routeHash optional
     o Integer tilted optional
     o Integer acceleration optional
+    o Integer temperature optional
     o String vehicle optional
     o Holder issuer optional
+    o FileObj file optional
+}
+
+asset FileObj identified by fileId {
+    o String fileId
+    o String fileHash
 }
 
 enum CarStatus {
@@ -62,11 +70,8 @@ enum ProductStatus {
     o MOUNTED
 }
 
-enum RoofStatus  {
-    o ONSTOCK
-    o MOUNTED
-}
-
+//HACK When referencing participants be as explicit as possible.
+//E.g.: Assembly_holder instead of Holder
 abstract participant User identified by uID {
     o String uID
 }
@@ -105,20 +110,32 @@ transaction AlterInformation {
 /*
 Super Class for every UserInteraction
 */
-transaction UserInteraction {
+abstract transaction UserInteraction {
   --> Car car
-
   //Issuer can be used to
   //A. Identify owner
   //B. Identy holder (especially Transport and QA Holder)
   --> Holder issuer
 }
 
+abstract transaction ProductCreation {
+  o String productId
+  --> Holder issuer
+}
+
+transaction ShellArrival extends ProductCreation {
+  --> Company company
+}
+
+transaction RoofArrival extends ProductCreation {
+  --> Company company
+}
+
 /*
 Creates Car, sets CarId
 */
-transaction CreateCar extends UserInteraction {
-  o String productId
+transaction CreateCar extends ProductCreation {
+  --> Shell shell
   // CarStatus = ASSEMBLY
   // Company company (wird durch issuer bestimmt)
   // Participant holder (wird durch issuer bestimmt)
@@ -129,8 +146,7 @@ transaction CreateCar extends UserInteraction {
 Assemble Car and add Roof, Shell
 */
 transaction Assembly extends UserInteraction {
-  o Roof roof
-  o Shell shell
+  --> Roof roof
 }
 
 transaction QACheck extends UserInteraction {
@@ -149,6 +165,8 @@ transaction TransportStart extends UserInteraction {
 transaction SensorStatusUpdate extends UserInteraction {
     o Integer tilted
     o Integer acceleration
+    o Integer temperature
+    o FileObj file optional
 }
 
 transaction TransportStop extends UserInteraction {

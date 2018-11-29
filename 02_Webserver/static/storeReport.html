@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BC-demonstrator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="main">
+
+    <h4> Save a report </h4>
+    <p class="info-text"> Please enter a valid car id </p>
+
+    <label for="basic-url">Your vanity URL</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-dark" id="basic-addon3">sc.demonstrator.net</span>
+      </div>
+      <input placeholder="e.g. car9123" type="text" class="form-control" id="input-car" aria-describedby="basic-addon3">
+
+    </div>
+
+    <label for="input-tilt">Tilt level (degrees)</label>
+    <div class="input-group mb-3">
+      <input placeholder="e.g. 213" type="text" class="form-control" id="input-tilt" aria-describedby="basic-addon3">
+    </div>
+
+    <label for="input-acc">Accelleration (max. m/s2)</label>
+    <div class="input-group mb-3">
+      <input placeholder="e.g. 3" type="text" class="form-control" id="input-acc" aria-describedby="basic-addon3">
+    </div>
+
+    <label for="input-temp">Temperatur (°C)</label>
+    <div class="input-group mb-3">
+      <input placeholder="e.g. 55" type="text" class="form-control" id="input-temp" aria-describedby="basic-addon3">
+    </div>
+
+
+
+    <label for="basic-url">Basic file upload</label>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">FileObj</span>
+      </div>
+      <textarea class="form-control" aria-label="With textarea"  id="input-file"></textarea>
+    </div> <br>
+    <button  class="btn text-dark" stlye="padding-top:15px;">Save</button>
+
+    <!-- This will later include the dataset -->
+    <div id="car-description">
+    </div>
+
+    <script>
+    $(document).ready(function() {
+          $("button").click(function() {
+            var input_car = $('#input-car').val();
+            var input_tilt = $('#input-tilt').val();
+            var input_acc = $('#input-acc').val();
+            var input_temp = $('#input-temp').val();
+            var input_text = $('#input-file').val();
+
+              $.ajax({
+                url: 'http://127.0.0.1:5000/report',
+                type: 'GET',
+                data: {
+                  inputCar: input_car,
+                  inputTilt: input_tilt,
+                  inputAcc:input_acc,
+                  inputTemp:input_temp,
+                  inputText:input_text
+                },
+                dataType: 'text',
+                error: function(xhr, status, error) {
+                  var data = xhr.responseText;
+                  var replace_string = `
+                    Something went wrong. Please check your data and try again.<br>
+                    Error: ` + data;
+                  $('#car-description').html(replace_string);
+                },
+                success: function(data) {
+                  //payload = JSON.parse(data)
+                  var replace_string = '<div class="result">&#10004; ' + data + '<b>';
+                  $('#car-description').html(replace_string);
+                },
+              });
+            });
+          });
+    </script>
+
+</body>
+
+</html>
