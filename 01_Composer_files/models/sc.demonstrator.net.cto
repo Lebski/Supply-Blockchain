@@ -20,7 +20,7 @@ asset Car extends Product {
     --> Roof roof optional
     --> Shell shell optional
     o QAReport[] qAReport optional
-    o TransportReport transportReport optional
+    o TransportReport[] transportReport optional
 }
 
 asset Roof extends Product {
@@ -31,26 +31,30 @@ asset Shell extends Product {
     o ProductStatus status default="ONSTOCK"
 }
 
-asset QAReport identified by qaId {
-    o String qaId
+concept QAReport {
     o Boolean lightCheck default=false
     o Boolean hornCheck default=false
     o Holder issuer optional
     o FileObj file optional
 }
 
-asset TransportReport identified by transId {
-    o String transId
+concept TransportReport {
     o String routeHash optional
-    o Integer tilted optional
-    o Integer acceleration optional
-    o Integer temperature optional
+    o Measurement[] tilted optional
+    o Measurement[] humidity optional
+    o Measurement[] temperature optional
     o String vehicle optional
     o Holder issuer optional
     o FileObj file optional
 }
+  
+concept Measurement {
+    o Double lat
+    o Double long
+	o Double measuredValue
+}
 
-asset FileObj identified by fileId {
+concept FileObj {
     o String fileId
     o String fileHash
 }
@@ -150,24 +154,34 @@ transaction Assembly extends UserInteraction {
 }
 
 transaction QACheck extends UserInteraction {
-  o String qaId
   o Boolean lightCheck
   o Boolean hornCheck
 }
 
 transaction ReadyForTransport extends UserInteraction {
-  o String transId
 }
 
 transaction TransportStart extends UserInteraction {
 }
 
-transaction SensorStatusUpdate extends UserInteraction {
-    o Integer tilted
-    o Integer acceleration
-    o Integer temperature
-    o FileObj file optional
+transaction TiltedStatusUpdate extends UserInteraction {
+    o Double lat
+    o Double long
+    o Double measuredValue
 }
+  
+transaction HumidityStatusUpdate extends UserInteraction {
+    o Double lat
+    o Double long
+    o Double measuredValue
+}
+  
+transaction TemperatureStatusUpdate extends UserInteraction {
+    o Double lat
+    o Double long
+    o Double measuredValue
+}
+  
 
 transaction TransportStop extends UserInteraction {
   // CarStatus status = ARRIVED
