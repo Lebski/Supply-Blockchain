@@ -2,7 +2,7 @@
 
 Visit the [Wiki](https://github.com/Lebski/Supply-Blockchain/wiki) for guidlines on installation. 
 
-Test-server http://35.246.107.139 :large_blue_circle: (online)
+Test-server http://35.246.107.139 :red_circle: (offline)
 
 ### Overview ###
 
