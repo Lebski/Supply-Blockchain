@@ -1,5 +1,9 @@
 # Supply-Blockchain
 
+Visit the [Wiki](https://github.com/Lebski/Supply-Blockchain/wiki) for guidlines on installation. 
+
+Test-server http://35.246.107.139 :red_circle: (offline)
+
 ### Overview ###
 
 The _Supply Blockchain_ Project is a feasibility study to explore how an industrial supply-chain can be implemented with blockchain technology. Particularly, we use an example from the automobile industry. 

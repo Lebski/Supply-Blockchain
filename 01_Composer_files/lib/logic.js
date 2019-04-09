@@ -15,8 +15,8 @@ async function executeSetup(SetupParam) {
   const Company_reg = await getAssetRegistry(NS + '.Company');
   const Roof_reg = await getAssetRegistry(NS + '.Roof');
   const Shell_reg = await getAssetRegistry(NS + '.Shell');
-  const QAReport_reg = await getAssetRegistry(NS + '.QAReport');
-  const TransportReport_reg = await getAssetRegistry(NS + '.TransportReport');
+  //const QAReport_reg = await getAssetRegistry(NS + '.QAReport');
+  //const TransportReport_reg = await getAssetRegistry(NS + '.TransportReport');
   const Customer_reg = await getParticipantRegistry(NS + '.Customer');
   const Assembly_holder_reg = await getParticipantRegistry(NS + '.Assembly_holder');
   const QA_holder_reg = await getParticipantRegistry(NS + '.QA_holder');
@@ -28,13 +28,16 @@ async function executeSetup(SetupParam) {
   var n_Car = factory.newResource(NS, 'Car', "Car_TEST");
   var n_Roof = factory.newResource(NS, 'Roof', "Roof_TEST");
   var n_Shell = factory.newResource(NS, 'Shell', "Shell_TEST");
-  var n_QAReport = factory.newResource(NS, 'QAReport', "QAReport_TEST");
-  var n_TransportReport = factory.newResource(NS, 'TransportReport', "TransportReport_TEST");
+  var n_QAReport = factory.newConcept(NS, 'QAReport');
+  var n_TransportReport = factory.newConcept(NS, 'TransportReport');
   var n_Customer = factory.newResource(NS, 'Customer', "Customer_TEST");
   var n_Assembly_holder = factory.newResource(NS, 'Assembly_holder', "Assembly_holder_TEST");
   var n_QA_holder = factory.newResource(NS, 'QA_holder', "QA_holder_TEST");
   var n_Transport_holder = factory.newResource(NS, 'Transport_holder', "Transport_holder_TEST");
   var n_Distribution_holder = factory.newResource(NS, 'Distribution_holder', "Distribution_holder_TEST");
+  var n_MeasurementTilted = factory.newConcept(NS, 'Measurement');
+  var n_MeasurementTemperature = factory.newConcept(NS, 'Measurement');
+  var n_MeasurementHumidity = factory.newConcept(NS, 'Measurement');
 
   n_Company.name = "CAPITALO_INC";
   n_Company.lat = 50.00000;
@@ -46,7 +49,7 @@ async function executeSetup(SetupParam) {
   // n_Car.Shell = n_Shell;
   n_Car.qAReport = [n_QAReport]
   // n_Car.qAReport.push(n_QAReport); HACK Enable this if you want to add more to the array
-  n_Car.transportReport = n_TransportReport;
+  n_Car.transportReport = [n_TransportReport];
   n_Roof.company = n_Company;
   // n_Roof.RoofStatus = "MOUNTED";
   n_Shell.company = n_Company;
@@ -55,11 +58,24 @@ async function executeSetup(SetupParam) {
   n_QAReport.hornCheck = true;
   n_QAReport.issuer = n_QA_holder;
   n_TransportReport.routeHash = "0xdeadbeef";
-  n_TransportReport.tilted = 2;
-  n_TransportReport.acceleration = 5;
+  n_TransportReport.tilted = [n_MeasurementTilted];
+  n_TransportReport.temperature = [n_MeasurementTemperature];
+  n_TransportReport.humidity = [n_MeasurementHumidity];
   n_TransportReport.vehicle = "Matchbox";
   n_TransportReport.issuer = n_Transport_holder;
-
+  
+  //Measurements
+  n_MeasurementTilted.lat = 100.00000;
+  n_MeasurementTemperature.lat = 101.00000;
+  n_MeasurementHumidity.lat = 102.00000;
+  n_MeasurementTilted.long = 100.00000;
+  n_MeasurementTemperature.long = 101.00000;
+  n_MeasurementHumidity.long = 102.00000;  
+  n_MeasurementTilted.measuredValue = 100.00000;
+  n_MeasurementTemperature.measuredValue = 101.00000;
+  n_MeasurementHumidity.measuredValue = 102.00000;  
+  
+  
   // n_Customer
   n_Assembly_holder.company = n_Company;
   n_Assembly_holder.lat = 50.00000;
@@ -76,8 +92,6 @@ async function executeSetup(SetupParam) {
   await Company_reg.add(n_Company);
   await Roof_reg.add(n_Roof);
   await Shell_reg.add(n_Shell);
-  await QAReport_reg.add(n_QAReport);
-  await TransportReport_reg.add(n_TransportReport);
   await Customer_reg.add(n_Customer);
   await Assembly_holder_reg.add(n_Assembly_holder);
   await QA_holder_reg.add(n_QA_holder);
@@ -185,15 +199,17 @@ async function executeQACheck(QAInfo) {
   // Get the asset registry for Car.
   const carRegistry = await getAssetRegistry(NS + '.Car');
 
-  // Generating new Car
+  // Generating new QAReport
   var factory = getFactory();
-  var newReport = factory.newResource(NS, 'QAReport', QAInfo.qaId);
+  var newReport = factory.newConcept(NS, 'QAReport');
 
   newReport.lightCheck = QAInfo.lightCheck
   newReport.hornCheck = QAInfo.hornCheck
   newReport.issuer = QAInfo.issuer;
-
+    
   QAInfo.car.status = "QA";
+  QAInfo.car.holder = QAInfo.issuer;
+  
   if (QAInfo.car.qAReport != null) {
     QAInfo.car.qAReport.push(newReport);
   } else {
@@ -220,16 +236,9 @@ async function executeTransportReady(TransportInfo) {
   // Get the asset registry for Person.
   const carRegistry = await getAssetRegistry(NS + '.Car');
 
-  // Generating new Car
-  var factory = getFactory();
-  var newReport = factory.newResource(NS, 'TransportReport', TransportInfo.transId);
-
-  newReport.tilted = 0;
-  newReport.acceleration = 0;
-  newReport.issuer = TransportInfo.issuer;
 
   TransportInfo.car.status = "READYFORTRANSPORT";
-  TransportInfo.car.transportReport = newReport;
+
 
   await carRegistry.update(TransportInfo.car);
 }
@@ -242,49 +251,143 @@ async function executeTransportReady(TransportInfo) {
  */
 async function executeTransportStart(TransportInfo) {
 
-  // The issuer of the transaction must be the same issuer than in "ReadyForTransport"
-  if (TransportInfo.car.transportReport.issuer == TransportInfo.issuer) {
-
-    const carRegistry = await getAssetRegistry(NS + '.Car');
-
-
-    TransportInfo.car.status = "TRANSPORT";
-
-    await carRegistry.update(TransportInfo.car);
+  const carRegistry = await getAssetRegistry(NS + '.Car');
+  
+  // Generating new TransportReport
+  var factory = getFactory();  
+  var newReport = factory.newConcept(NS, 'TransportReport');
+  
+  newReport.vehicle = "Truck_312";
+  newReport.issuer = TransportInfo.issuer;
+  
+  TransportInfo.car.holder = TransportInfo.issuer;
+  TransportInfo.car.status = "TRANSPORT";
+  
+  if (TransportInfo.car.transportReport != null) {
+    TransportInfo.car.transportReport.push(newReport);
   } else {
-    throw new Error('Issuer must be the same "Transport_holder" who also issued the TransportReport for this Vehicle');
+    TransportInfo.car.transportReport = [newReport]
   }
+  await carRegistry.update(TransportInfo.car);
+
+  
 }
 
 /**
  * Update Sensor Data
- * @param {sc.demonstrator.net.SensorStatusUpdate} TransportInfo - Info about the Transport
+ * @param {sc.demonstrator.net.TiltedStatusUpdate} TransportInfo - Info about the Transport
  * @transaction
  */
-async function executeTransportSensorStatusUpdate(TransportInfo) {
-  // The issuer of the transaction must be the same issuer than in "ReadyForTransport"
-  if (TransportInfo.car.transportReport.issuer == TransportInfo.issuer) {
+async function executeTiltedSensorStatusUpdate(TransportInfo) {
+  // The issuer of the transaction must be the same issuer than in "TransportStart"
+  var lastReport = TransportInfo.car.transportReport.length-1;
+  if (TransportInfo.car.transportReport[lastReport].issuer == TransportInfo.issuer) {
 
     const carRegistry = await getAssetRegistry(NS + '.Car');
-
-    if (TransportInfo.tilted > 0) {
-      TransportInfo.car.transportReport.tilted = TransportInfo.tilted;
+    
+    var factory = getFactory();  
+    var newMeasurement = factory.newConcept(NS, 'Measurement');
+    
+    newMeasurement.lat = TransportInfo.lat;
+    newMeasurement.long = TransportInfo.long;
+    newMeasurement.measuredValue = TransportInfo.measuredValue;
+    
+      
+    if (TransportInfo.car.transportReport[lastReport].tilted != null) {
+      TransportInfo.car.transportReport[lastReport].tilted.push(newMeasurement);
+    } else {
+     TransportInfo.car.transportReport[lastReport].tilted = [newMeasurement];
     }
-    if (TransportInfo.acceleration > 0) {
-      TransportInfo.car.transportReport.acceleration = TransportInfo.acceleration;
-    }
-    if (TransportInfo.temperature > -274) {
-      TransportInfo.car.transportReport.acceleration = TransportInfo.temperature;
-    }
-    if (TransportInfo.file != null) {
-      TransportInfo.car.transportReport.file = TransportInfo.file;
-    }
-
+  
     await carRegistry.update(TransportInfo.car);
+     
+    
+ //   if (TransportInfo.tilted > 0) {
+ //     TransportInfo.car.transportReport.tilted = TransportInfo.tilted;
+ //   }
+ //   if (TransportInfo.acceleration > 0) {
+ //     TransportInfo.car.transportReport.acceleration = TransportInfo.acceleration;
+ //   }
+ //   if (TransportInfo.temperature > -274) {
+ //     TransportInfo.car.transportReport.acceleration = TransportInfo.temperature;
+ //   }
+ //   if (TransportInfo.file != null) {
+ //     TransportInfo.car.transportReport.file = TransportInfo.file;
+ //   }
+
   } else {
     throw new Error('Issuer must be the same "Transport_holder" who also issued the TransportReport for this Vehicle');
   }
 }
+
+
+/**
+ * Update Sensor Data
+ * @param {sc.demonstrator.net.TemperatureStatusUpdate} TransportInfo - Info about the Transport
+ * @transaction
+ */
+async function executeTemperatureSensorStatusUpdate(TransportInfo) {
+  // The issuer of the transaction must be the same issuer than in "TransportStart"
+  var lastReport = TransportInfo.car.transportReport.length-1;
+  if (TransportInfo.car.transportReport[lastReport].issuer == TransportInfo.issuer) {
+
+    const carRegistry = await getAssetRegistry(NS + '.Car');
+    
+    var factory = getFactory();  
+    var newMeasurement = factory.newConcept(NS, 'Measurement');
+    
+    newMeasurement.lat = TransportInfo.lat;
+    newMeasurement.long = TransportInfo.long;
+    newMeasurement.measuredValue = TransportInfo.measuredValue;
+    
+      
+    if (TransportInfo.car.transportReport[lastReport].temperature != null) {
+      TransportInfo.car.transportReport[lastReport].temperature.push(newMeasurement);
+    } else {
+     TransportInfo.car.transportReport[lastReport].temperature = [newMeasurement];
+    }
+  
+    await carRegistry.update(TransportInfo.car);
+     
+  } else {
+    throw new Error('Issuer must be the same "Transport_holder" who also issued the TransportReport for this Vehicle');
+  }
+}
+
+
+/**
+ * Update Sensor Data
+ * @param {sc.demonstrator.net.HumidityStatusUpdate} TransportInfo - Info about the Transport
+ * @transaction
+ */
+async function executeHumiditySensorStatusUpdate(TransportInfo) {
+  // The issuer of the transaction must be the same issuer than in "TransportStart"
+  var lastReport = TransportInfo.car.transportReport.length-1;
+  if (TransportInfo.car.transportReport[lastReport].issuer == TransportInfo.issuer) {
+
+    const carRegistry = await getAssetRegistry(NS + '.Car');
+    
+    var factory = getFactory();  
+    var newMeasurement = factory.newConcept(NS, 'Measurement');
+    
+    newMeasurement.lat = TransportInfo.lat;
+    newMeasurement.long = TransportInfo.long;
+    newMeasurement.measuredValue = TransportInfo.measuredValue;
+    
+      
+    if (TransportInfo.car.transportReport[lastReport].humidity != null) {
+      TransportInfo.car.transportReport[lastReport].humidity.push(newMeasurement);
+    } else {
+     TransportInfo.car.transportReport[lastReport].humidity = [newMeasurement];
+    }
+  
+    await carRegistry.update(TransportInfo.car);
+
+  } else {
+    throw new Error('Issuer must be the same "Transport_holder" who also issued the TransportReport for this Vehicle');
+  }
+}
+
 
 /**
  * Car has arrived
